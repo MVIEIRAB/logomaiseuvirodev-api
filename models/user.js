@@ -3,30 +3,35 @@ const bcrypt = require('bcryptjs')
 
 const UserSchema = new mongoose.Schema({
     nome: {
-        type:String,
+        type: String,
         require: true
     },
 
     email: {
         type: String,
         unique: true,
-        require:true,
-        lowercase:true
+        require: true,
+        lowercase: true
     },
 
     password: {
-        type:String,
+        type: String,
         required: true,
         select: false
     },
 
     createdat: {
         type: Date,
-        default:Date.now
+        default: Date.now,
     },
+
+    triggeredBy: {
+        type: String,
+        default: 'Matheus V'
+      }
 })
 
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function (next) {
     const hash = await bcrypt.hash(this.password, 10)
     this.password = hash
 
